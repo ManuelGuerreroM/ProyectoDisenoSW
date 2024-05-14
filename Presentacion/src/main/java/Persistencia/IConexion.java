@@ -13,6 +13,6 @@ import java.sql.SQLException;
  * @author Admin
  */
 public interface IConexion {
-    Connection crearConexion() throws SQLException;
+    Connection getConexion();
     void cerrarConexion() throws SQLException;
 }

@@ -17,13 +17,6 @@ public class Principal {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        //Conexion
-        String url = "jdbc:mysql://localhost:3306/?user=root";
-        String usuario = "root";
-        String contraseña = "12345678";
-
-        // Crea una instancia de la clase Conexion
-        Conexion conexion = new Conexion(url, usuario, contraseña);
         
         //Te manda al inicio de sesion
         IniciarSesion iniciarSesion = new IniciarSesion();

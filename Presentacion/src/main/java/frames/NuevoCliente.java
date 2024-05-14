@@ -2,6 +2,7 @@
 package frames;
 import java.awt.Color;
 import javax.swing.JOptionPane;
+import persistencia.ClienteDAO;
 
 /**
  * @author Equipo2
@@ -234,13 +235,8 @@ public class NuevoCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRegresarActionPerformed
 
     private void btnRegistrarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarClienteActionPerformed
-    
-        String nombre = txtNombre.getText();
-        String telefono = txtTelefono.getText();
-        String correo = txtCorreo.getText();
-        String curp = txtCurp.getText();
-        String ine = txtIne.getText();
-        
+        ClienteDAO sql = new ClienteDAO();
+        sql.agregarCliente(txtNombre.getText(), txtCurp.getText(), txtTelefono.getText(), txtCorreo.getText(), txtIne.getText());
         if (validacion()) {
             
             //Registro TEMPORAL

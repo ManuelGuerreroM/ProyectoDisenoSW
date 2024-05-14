@@ -12,7 +12,7 @@ import objetoNegocio.Cliente;
  */
 public interface IClienteDAO {
     
-    Cliente agregarCliente(Cliente c) throws PersistenciaException;
+    boolean agregarCliente(String nombre, String CURP, String celular, String correo, String noIne) throws PersistenciaException;
     
     Cliente eliminarCliente(Cliente c) throws PersistenciaException;
     

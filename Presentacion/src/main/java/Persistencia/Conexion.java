@@ -15,29 +15,42 @@ import java.sql.SQLException;
  */
 public class Conexion implements IConexion{
    
-    private String cadenaConexion = "jdbc:mysql://localhost:3306/?user=root";
-    private String usuario = "root";
-    private String contrasena = "12345678";
-    private Connection conexion;
+    private String CLASSNAME = "com.mysql.cj.jdbc.Driver";
+    private String URL = "jdbc:mysql://localhost:3306/sistemavehiculos";
+    private String USERNAME = "root";
+    private String PASSWORD = "12345678";
+    private Connection con;
 
-    
-    public Conexion(String cadenaConexion, String usuario, String contrasena){
-        this.cadenaConexion = cadenaConexion;
-        this.usuario = usuario;
-        this.contrasena = contrasena;
+    /**
+     * Constructor de la clase `Conexion`. Establece una conexión con la base de
+     * datos utilizando los parámetros definidos en esta clase.
+     */
+    public Conexion() {
+        try {
+            Class.forName(CLASSNAME);  // Carga la clase del controlador JDBC.
+            con = DriverManager.getConnection(URL, USERNAME, PASSWORD);  // Establece la conexión a la base de datos.
+        } catch (ClassNotFoundException e) {
+            System.err.println("Error en " + e);  // Manejo de errores en caso de no encontrar la clase del controlador.
+        } catch (SQLException e) {
+            System.err.println("Error en " + e);  // Manejo de errores en caso de problemas de conexión.
+        }
     }
     
+    /**
+     * Obtiene la conexión a la base de datos.
+     *
+     * @return Objeto de conexión a la base de datos.
+     */
     @Override
-    public Connection crearConexion() throws SQLException {
-        conexion = DriverManager.getConnection(cadenaConexion, usuario, contrasena);
-        return conexion;
+    public Connection getConexion() {
+        return con;
     }
     
     @Override
     public void cerrarConexion() throws SQLException{
         try {
-            if (conexion != null && !conexion.isClosed()) {
-                conexion.close();
+            if (con != null && !con.isClosed()) {
+                con.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();

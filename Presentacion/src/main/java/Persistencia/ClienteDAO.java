@@ -11,56 +11,59 @@ import objetoNegocio.Cliente;
 /**
  * @author Equipo2
  */
-public class ClienteDAO implements IClienteDAO{
-    
-    private final IConexion conexion;
-    //private static final Logger Log = Logger.getLogger();
-    public ClienteDAO(IConexion conexion){
-        this.conexion = conexion;
-    }
+public class ClienteDAO extends Conexion implements IClienteDAO {
 
+    public ClienteDAO() {
+    }
+    Conexion conex = new Conexion();
+    
+    /**
+     * Registra a un nuevo cliente en la base de datos.
+     *
+     * @param nombre
+     * @param CURP
+     * @param celular
+     * @param correo
+     * @param noIne
+     * @return true si el registro es exitoso, false en caso contrario.
+     */
     @Override
-    public Cliente agregarCliente(Cliente c) throws PersistenciaException {
-        String crearCliente = "INSERT INTO cliente (nombre, CURP, celular, correo, noIne) " +
-                    "VALUES (?, ?, ?, ?, ?)";
-        Cliente resultado = null;
-      
+    public boolean agregarCliente(String nombre, String CURP, String celular, String correo, String noIne) {
+        PreparedStatement pst = null;
         try {
-            Connection con =  conexion.crearConexion();
-            PreparedStatement insert = con.prepareStatement(crearCliente);
-            insert.setString(1, c.getNombre());
-            insert.setString(2, c.getCURP());
-            insert.setString(3, c.getCelular());
-            insert.setString(4, c.getCorreo());
-            insert.setString(5, c.getNoINE());
-            insert.executeUpdate();
-            
-            ResultSet res = insert.getGeneratedKeys();         
-            
-            if (res.next()) {
-                Integer id = res.getInt(Statement.RETURN_GENERATED_KEYS);
-                
-                resultado = buscarClienteId(id);
-                
-               // resultado = new Cliente(id, res.getString("nombres"), res.getString("ap_paterno"), 
-               // res.getString("ap_materno"), res.getString("telefono"), res.getDate("fechaInicioLabores"));
-                
-                return resultado;
+            String consulta = "insert into cliente(nombreCompleto, curp, celular, correo, noIne) values(?,?,?,?,?)";
+            pst = getConexion().prepareStatement(consulta);
+            pst.setString(1, nombre);
+            pst.setString(2, CURP);
+            pst.setString(3, celular);
+            pst.setString(4, correo);
+            pst.setString(5, noIne);
+
+            if (pst.executeUpdate() == 1) {
+                return true;
             }
-            
-        }catch(SQLException e){
-            //Log.log(Level.SEVERE, e.getMessage());
-            throw new PersistenciaException ("No fue posible agregar el Activista");
+
+        } catch (Exception e) {
+            System.out.println("Error en " + e);
+        } finally {
+            try {
+                if (getConexion() != null) {
+                    conex.getConexion().close();
+                }
+                if (pst != null) {
+                    pst.close();
+                };
+            } catch (Exception e) {
+                System.out.println("Error en " + e);
+            }
+
         }
-        return resultado;
+        return false;
     }
 
     @Override
     public Cliente eliminarCliente(Cliente c) throws PersistenciaException {
-        Cliente result =  buscarClienteId(c.getId());
-        //String buscarCliente = "DELETE * FROM cliente WHERE id = " + result.getId();
-        System.out.println(result);
-        return null;
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
@@ -70,28 +73,8 @@ public class ClienteDAO implements IClienteDAO{
 
     @Override
     public Cliente buscarClienteId(int id) throws PersistenciaException {
-        String buscarCliente = "SELECT * FROM cliente WHERE id = " + id;
-        
-        Cliente resultado = null;
-        
-        try {
-            Connection con =  conexion.crearConexion();
-            PreparedStatement insert = con.prepareStatement(buscarCliente);          
-            
-            ResultSet res = insert.getGeneratedKeys();         
-            
-            if (res.next()) {
-                Integer idResultado = res.getInt("id");
-                resultado = new Cliente(idResultado, res.getString("nombre"), res.getString("curp"), 
-                        res.getString("celular"), res.getString("correo"), res.getString("noIne"));
-                
-                return resultado;
-            }
-            
-        }catch(SQLException e){
-           // Log.log(Level.SEVERE, e.getMessage());
-            throw new PersistenciaException ("No fue posible buscar el Activista");
-        }
-        return resultado;
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+    
+    
 }

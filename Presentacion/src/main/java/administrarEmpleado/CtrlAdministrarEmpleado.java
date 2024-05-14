@@ -19,7 +19,7 @@ public class CtrlAdministrarEmpleado {
     private EmpleadoDAO empleadoDAO;
 
     public CtrlAdministrarEmpleado(IConexion conexion) throws SQLException {
-        this.empleadoDAO = new EmpleadoDAO(conexion.crearConexion());
+      
     }
 
     public void agregarEmpleado(EmpleadoDTO empleado) {
